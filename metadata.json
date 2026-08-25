@@ -1,0 +1,6 @@
+{
+  "name": "Roqya Diag & Soins",
+  "description": "Application orthodoxe de diagnostic des maux occultes (sorcellerie, djinns, mauvais œil) et programme de traitement personnalisé selon la méthode de Ben Halima Abderraouf avec lecteur audio coranique en arabe et suivi sur 12 jours.",
+  "requestFramePermissions": ["notifications"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
