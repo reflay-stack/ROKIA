@@ -3,8 +3,9 @@ import { QuranVerse } from '../types/roqya';
 import { 
   Play, Pause, SkipForward, SkipBack, RotateCcw, Volume2, VolumeX, 
   Sparkles, CheckCircle, Flame, HeartHandshake, Eye, EyeOff, ShieldCheck, 
-  Repeat, Headphones, Sliders, ExternalLink, Bookmark
+  Repeat, Headphones, Sliders, ExternalLink, Bookmark, Waves
 } from 'lucide-react';
+import { SoothingAudioVisualizer } from './SoothingAudioVisualizer';
 
 interface AudioPlayerProps {
   playlist: QuranVerse[];
@@ -18,6 +19,7 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({ playlist, dominantCond
   const [targetRepetitions, setTargetRepetitions] = useState<number>(7);
   const [showTransliteration, setShowTransliteration] = useState<boolean>(true);
   const [showFrenchMeaning, setShowFrenchMeaning] = useState<boolean>(true);
+  const [showVisualizer, setShowVisualizer] = useState<boolean>(true);
   const [filterType, setFilterType] = useState<'all' | 'base' | 'specific'>('all');
   const [playbackSpeed, setPlaybackSpeed] = useState<number>(1.0);
   const [volume, setVolume] = useState<number>(0.9);
@@ -276,8 +278,8 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({ playlist, dominantCond
               </div>
             )}
 
-            {/* Secondary Toggles (Transliteration & French Meaning) */}
-            <div className="flex items-center justify-between gap-2 pt-2 pb-4 text-xs text-slate-400 border-b border-slate-800/60">
+            {/* Secondary Toggles (Transliteration, French Meaning & Soothing Wave Visualizer) */}
+            <div className="flex flex-wrap items-center justify-between gap-3 pt-2 pb-4 text-xs text-slate-400 border-b border-slate-800/60">
               <button
                 onClick={() => setShowTransliteration(!showTransliteration)}
                 className="flex items-center gap-1.5 hover:text-slate-200 transition-colors"
@@ -293,7 +295,29 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({ playlist, dominantCond
                 {showFrenchMeaning ? <Eye className="w-3.5 h-3.5 text-emerald-400" /> : <EyeOff className="w-3.5 h-3.5" />}
                 <span>Sens en français {showFrenchMeaning ? '(Visible)' : '(Masqué)'}</span>
               </button>
+
+              <button
+                onClick={() => setShowVisualizer(!showVisualizer)}
+                className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg border transition-all ${
+                  showVisualizer
+                    ? 'bg-emerald-950/70 border-emerald-700/60 text-emerald-300 shadow-sm'
+                    : 'bg-slate-950/40 border-slate-800 text-slate-400 hover:text-slate-200'
+                }`}
+                title="Animation d'ondes & particules apaisantes"
+              >
+                <Waves className="w-3.5 h-3.5 text-emerald-400" />
+                <span>Onde & Concentration {showVisualizer ? '(Active)' : '(Masquée)'}</span>
+              </button>
             </div>
+
+            {/* Soothing Visualizer Animation */}
+            {showVisualizer && (
+              <SoothingAudioVisualizer
+                isPlaying={isPlaying}
+                surahName={`${currentVerse.surahNameFr} (${currentVerse.verseRange})`}
+                theme={currentVerse.isBaseVerse ? 'emerald' : 'amber'}
+              />
+            )}
 
             {/* Transliteration Box */}
             {showTransliteration && (
