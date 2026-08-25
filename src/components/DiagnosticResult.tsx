@@ -306,13 +306,13 @@ export const DiagnosticResult: React.FC<DiagnosticResultProps> = ({
                 <span className="text-[10px] uppercase tracking-wider font-bold px-2 py-0.5 rounded bg-indigo-900 text-indigo-200 border border-indigo-700">
                   Nouveau • Méthode Ben Halima
                 </span>
-                <span className="text-xs text-amber-300 font-semibold">16 Symboles audio</span>
+                <span className="text-xs text-amber-300 font-semibold">45 Symboles audio</span>
               </div>
               <h3 className="text-base sm:text-lg font-bold text-white">
                 Confirmer par le Diagnostic à l'Écoute (Versets Symboliques)
               </h3>
               <p className="text-xs text-slate-300 leading-relaxed max-w-xl">
-                Écoutez les 16 versets symboliques (cadenas, nœuds, cimetière, mer, puits, poison mangé, mauvais œil) et cochez vos réactions corporelles en direct pour affiner ce diagnostic.
+                Écoutez les 45 versets symboliques (cadenas, nœuds, cimetière, mer, puits, poison mangé, bêtes sauvages, mauvais œil) et cochez vos réactions corporelles en direct pour affiner ce diagnostic.
               </p>
             </div>
           </div>

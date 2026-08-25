@@ -371,7 +371,7 @@ export const AudioDiagnostic: React.FC<AudioDiagnosticProps> = ({
                 Aucune Réaction Enregistrée
               </h3>
               <p className="text-xs sm:text-sm text-slate-300 max-w-md mx-auto">
-                Vous n'avez coché aucune réaction anormale (bâillements, chaleur, frissons, oppression) lors de l'écoute des 16 versets symboliques.
+                Vous n'avez coché aucune réaction anormale (bâillements, chaleur, frissons, oppression) lors de l'écoute des {SYMBOLIC_VERSES_LIST.length} versets symboliques.
               </p>
               <button
                 onClick={() => setShowFinalReport(false)}
@@ -802,13 +802,13 @@ export const AudioDiagnostic: React.FC<AudioDiagnosticProps> = ({
         </div>
       )}
 
-      {/* Grid of All 16 Symbolic Verses for Direct Jump */}
+      {/* Grid of All Symbolic Verses for Direct Jump */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Compass className="w-4 h-4 text-indigo-400" />
             <h3 className="text-base sm:text-lg font-extrabold text-white">
-              Index des 16 Versets Symboliques
+              Index des {SYMBOLIC_VERSES_LIST.length} Versets Symboliques
             </h3>
           </div>
           <span className="text-xs text-slate-400">
