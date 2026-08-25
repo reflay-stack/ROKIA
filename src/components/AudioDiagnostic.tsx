@@ -94,6 +94,16 @@ export const AudioDiagnostic: React.FC<AudioDiagnosticProps> = ({
 
   // Handle Audio Ended
   const handleAudioEnded = () => {
+    if (targetRepetitions === 999) {
+      // Infinite repeat mode
+      setCurrentRepetition((prev) => prev + 1);
+      if (audioRef.current) {
+        audioRef.current.currentTime = 0;
+        audioRef.current.play().catch(() => setAudioError(true));
+      }
+      return;
+    }
+
     if (currentRepetition < targetRepetitions) {
       setCurrentRepetition((prev) => prev + 1);
       if (audioRef.current) {
@@ -552,16 +562,24 @@ export const AudioDiagnostic: React.FC<AudioDiagnosticProps> = ({
             <div className="flex items-center gap-2 self-end sm:self-auto text-xs">
               {/* Repetitions dropdown */}
               <div className="flex items-center gap-1.5 bg-slate-950 px-2.5 py-1 rounded-xl border border-slate-800 text-slate-300">
-                <span>Répétitions :</span>
+                <span className="text-xs">Répétitions :</span>
                 <select
                   value={targetRepetitions}
-                  onChange={(e) => setTargetRepetitions(Number(e.target.value))}
-                  className="bg-transparent text-amber-300 font-bold focus:outline-none cursor-pointer"
+                  onChange={(e) => {
+                    setTargetRepetitions(Number(e.target.value));
+                    setCurrentRepetition(1);
+                  }}
+                  className="bg-transparent text-amber-300 font-bold focus:outline-none cursor-pointer text-xs"
                 >
-                  <option value={1} className="bg-slate-900 text-white">1x</option>
-                  <option value={3} className="bg-slate-900 text-white">3x</option>
-                  <option value={7} className="bg-slate-900 text-white">7x</option>
-                  <option value={11} className="bg-slate-900 text-white">11x</option>
+                  <option value={1} className="bg-slate-900 text-white">1 fois (1x)</option>
+                  <option value={3} className="bg-slate-900 text-white">3 fois (3x)</option>
+                  <option value={7} className="bg-slate-900 text-white">7 fois (7x)</option>
+                  <option value={11} className="bg-slate-900 text-white">11 fois (11x)</option>
+                  <option value={21} className="bg-slate-900 text-white">21 fois (21x)</option>
+                  <option value={33} className="bg-slate-900 text-white">33 fois (33x)</option>
+                  <option value={70} className="bg-slate-900 text-white">70 fois (70x)</option>
+                  <option value={100} className="bg-slate-900 text-white">100 fois (100x)</option>
+                  <option value={999} className="bg-slate-900 text-amber-400 font-bold">∞ Illimité (En boucle)</option>
                 </select>
               </div>
 
@@ -588,10 +606,17 @@ export const AudioDiagnostic: React.FC<AudioDiagnosticProps> = ({
                     <span className="text-xs text-slate-400 font-mono">
                       Symbole {currentIndex + 1} sur {filteredVerses.length}
                     </span>
-                    {currentRepetition > 1 && (
-                      <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-indigo-900/80 text-indigo-200">
-                        Passe {currentRepetition}/{targetRepetitions}
+                    {targetRepetitions === 999 ? (
+                      <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-950/80 text-amber-200 border border-amber-700/60 shadow-sm flex items-center gap-1">
+                        <span>Passe n°{currentRepetition}</span>
+                        <span className="text-amber-400 font-mono">• ∞ Illimité</span>
                       </span>
+                    ) : (
+                      currentRepetition > 1 && (
+                        <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-indigo-900/80 text-indigo-200">
+                          Passe {currentRepetition}/{targetRepetitions}
+                        </span>
+                      )
                     )}
                   </div>
                   <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight">

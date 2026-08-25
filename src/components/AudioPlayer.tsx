@@ -73,7 +73,8 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({ playlist, dominantCond
   // Handle Audio Ended (Loop repetitions then next verse)
   const handleAudioEnded = () => {
     if (targetRepetitions === 999) {
-      // Infinite repeat of current verse
+      // Infinite repeat of current verse: increment counter and replay
+      setCurrentRepetition((prev) => prev + 1);
       if (audioRef.current) {
         audioRef.current.currentTime = 0;
         audioRef.current.play().catch(() => setAudioError(true));
@@ -320,26 +321,36 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({ playlist, dominantCond
               <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-emerald-950/40 p-4 rounded-xl border border-emerald-800/40">
                 <div className="flex items-center gap-2 text-sm text-emerald-200 font-medium">
                   <Repeat className="w-4 h-4 text-emerald-400" />
-                  <span>Répétition du verset en cours :</span>
-                  <span className="font-bold text-emerald-100 bg-emerald-900/70 px-2 py-0.5 rounded-md border border-emerald-700/60">
-                    {targetRepetitions === 999 ? `${currentRepetition} (Boucle infinie)` : `${currentRepetition} / ${targetRepetitions}`}
+                  <span>Répétition du verset :</span>
+                  <span className={`font-bold px-2 py-0.5 rounded-md border ${
+                    targetRepetitions === 999 
+                      ? 'text-amber-200 bg-amber-950/80 border-amber-600/70 shadow-sm'
+                      : 'text-emerald-100 bg-emerald-900/70 border-emerald-700/60'
+                  }`}>
+                    {targetRepetitions === 999 ? `Passe n°${currentRepetition} • Boucle Illimitée (∞)` : `${currentRepetition} / ${targetRepetitions} fois`}
                   </span>
                 </div>
 
                 {/* Target Repetitions Selector */}
                 <div className="flex items-center gap-1.5 flex-wrap">
                   <span className="text-xs text-slate-400 mr-1">Répéter :</span>
-                  {[1, 3, 7, 11, 21, 999].map((rep) => (
+                  {[1, 3, 7, 11, 21, 33, 70, 100, 999].map((rep) => (
                     <button
                       key={rep}
-                      onClick={() => setTargetRepetitions(rep)}
+                      onClick={() => {
+                        setTargetRepetitions(rep);
+                        setCurrentRepetition(1);
+                      }}
                       className={`px-2.5 py-1 rounded-md text-xs font-semibold transition-all ${
                         targetRepetitions === rep
-                          ? 'bg-emerald-600 text-white shadow'
-                          : 'bg-slate-800 text-slate-400 hover:text-slate-200'
+                          ? rep === 999 
+                            ? 'bg-amber-600 text-white font-bold shadow-md shadow-amber-950 ring-1 ring-amber-400' 
+                            : 'bg-emerald-600 text-white shadow'
+                          : 'bg-slate-800 text-slate-400 hover:text-slate-200 hover:bg-slate-700'
                       }`}
+                      title={rep === 999 ? 'Lecture en boucle infinie / Illimité' : `Répéter ${rep} fois`}
                     >
-                      {rep === 999 ? '∞' : `${rep}x`}
+                      {rep === 999 ? '∞ Illimité' : `${rep}x`}
                     </button>
                   ))}
                 </div>
